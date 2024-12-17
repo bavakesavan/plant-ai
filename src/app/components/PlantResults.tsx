@@ -1,4 +1,6 @@
-export default function PlantResults({ plantInfo }: { plantInfo: any }) {
+import { PlantInfo } from "../types/plant-info"
+
+export default function PlantResults({ plantInfo }: { plantInfo: PlantInfo }) {
     if (!plantInfo) return null
 
     // Check if the identification was unsuccessful
@@ -13,7 +15,7 @@ export default function PlantResults({ plantInfo }: { plantInfo: any }) {
                 <div className="text-gray-700">
                     {plantInfo.description && plantInfo.description.length > 0 ? (
                         <div>
-                            <p className="italic mb-2">"Additional context from AI:"</p>
+                            <p className="italic mb-2">Additional context from AI:</p>
                             <p>{plantInfo.description}</p>
                         </div>
                     ) : (
@@ -41,12 +43,13 @@ export default function PlantResults({ plantInfo }: { plantInfo: any }) {
 
     // Predefined additional details
     const additionalDetails = [
-      { label: 'Native Region', value: plantInfo.nativeRegion || 'Not Available' },
-      { label: 'Growth Type', value: plantInfo.growthType || 'Not Available' },
-      { label: 'Sunlight Requirements', value: plantInfo.sunlightRequirements || 'Not Available' },
-      { label: 'Soil Preference', value: plantInfo.soilPreference || 'Not Available' },
-      { label: 'Water Needs', value: plantInfo.waterNeeds || 'Not Available' },
-      { label: 'Bloom Season', value: plantInfo.bloomSeason || 'Not Available' }
+      { label: 'Native Region', value: plantInfo.nativeRegion ? plantInfo.nativeRegion.slice(3) : 'Not Available' },
+      { label: 'Growth Type', value: plantInfo.growthType ? plantInfo.growthType.slice(3) : 'Not Available' },
+      { label: 'Sunlight Requirements', value: plantInfo.sunlightRequirements ? plantInfo.sunlightRequirements.slice(3) : 'Not Available' },
+      { label: 'Temperature Requirements', value: plantInfo.temperatureRequirements ? plantInfo.temperatureRequirements.slice(3) : 'Not Available' },
+      { label: 'Soil Preference', value: plantInfo.soilPreference ? plantInfo.soilPreference.slice(3) : 'Not Available' },
+      { label: 'Water Needs', value: plantInfo.waterNeeds ? plantInfo.waterNeeds.slice(3) : 'Not Available' },
+      { label: 'Bloom Season', value: plantInfo.bloomSeason ? plantInfo.bloomSeason.slice(3) : 'Not Available' }
     ]
   
     return (

@@ -1,17 +1,16 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
-
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!)
+const genAI = new GoogleGenerativeAI(process.env.API_SECRET!);
 
 export async function identifyPlant(file: File) {
   const reader = new FileReader()
   return new Promise((resolve, reject) => {
     reader.onloadend = async () => {
       const base64Image = (reader.result as string).split(',')[1]
-      
+
       try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-        
-        const prompt = 
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+
+        const prompt =
           "Identify this plant in detail. Provide comprehensive information:" +
           "\n- Scientific Name" +
           "\n- Common Name" +
@@ -20,6 +19,7 @@ export async function identifyPlant(file: File) {
           "\n- Native Region" +
           "\n- Growth Type (tree, shrub, herb)" +
           "\n- Sunlight Requirements" +
+          "\n- Temperature Requirements" +
           "\n- Soil Preference" +
           "\n- Water Needs" +
           "\n- Typical Bloom Season" +
@@ -27,22 +27,27 @@ export async function identifyPlant(file: File) {
           "\n\nProvide the most accurate and detailed information possible."
 
         const result = await model.generateContent({
-          contents: [{
-            role: "user",
-            parts: [
-              { text: prompt },
-              { inlineData: { 
-                mimeType: file.type, 
-                data: base64Image 
-              }}
-            ]
-          }]
-        })
+          contents: [
+            {
+              role: "user",
+              parts: [
+                { text: prompt },
+                {
+                  inlineData: {
+                    mimeType: file.type, // Ensure file.type is valid (e.g., 'image/jpeg' or 'image/png')
+                    data: base64Image,   // base64-encoded string of the image
+                  },
+                },
+              ],
+            },
+          ],
+        });
+
 
         const response = await result.response.text()
-        
+
         const parsedInfo = parseGeminiResponse(response)
-        
+
         resolve(parsedInfo)
       } catch (error) {
         reject(error)
@@ -61,6 +66,7 @@ function parseGeminiResponse(response: string) {
     nativeRegion: extractValue(response, 'Native Region') || 'Not specified',
     growthType: extractValue(response, 'Growth Type') || 'Unknown',
     sunlightRequirements: extractValue(response, 'Sunlight Requirements') || 'Not specified',
+    temperatureRequirements: extractValue(response, 'Temperature Requirements') || 'Not specified',
     soilPreference: extractValue(response, 'Soil Preference') || 'Not specified',
     waterNeeds: extractValue(response, 'Water Needs') || 'Not specified',
     bloomSeason: extractValue(response, 'Typical Bloom Season') || 'Not specified',
@@ -77,7 +83,7 @@ function extractValue(text: string, label: string): string | null {
 function extractDescription(text: string): string {
   const descriptionMatch = text.match(/Detailed Description:?\s*(.*?)(?=\n|$)/is)
   if (descriptionMatch) return descriptionMatch[1].trim()
-  
+
   return text.length > 300 ? text.substring(0, 300) + '...' : text
 }
 
@@ -89,9 +95,9 @@ function extractPropagationMethods(text: string): string[] {
       .split(/\d+\.|\*|-/)
       .filter(method => method.trim().length > 10)
       .map(method => method.trim())
-    
+
     return methods.length > 0 ? methods : ['No specific propagation methods found.']
   }
-  
+
   return ['No propagation methods available.']
 }

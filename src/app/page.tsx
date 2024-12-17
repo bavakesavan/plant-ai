@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import ImageUploader from './components/ImageUploader'
 import PlantResults from './components/PlantResults'
+import { PlantInfo } from './types/plant-info'
 
 export default function Home() {
-  const [plantInfo, setPlantInfo] = useState<any>(null)
+
+  const [plantInfo, setPlantInfo] = useState<PlantInfo | null>(null)
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
 
-  const handleIdentify = (info: any, image: string) => {
+  const handleIdentify = (info: PlantInfo, image: string) => {
     setPlantInfo(info)
     setUploadedImage(image)
   }

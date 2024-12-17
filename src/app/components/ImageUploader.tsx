@@ -3,9 +3,10 @@
 import { useState, useCallback, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { identifyPlant } from '../services/gemini-service'
+import { PlantInfo } from '../types/plant-info'
 
 interface ImageUploaderProps {
-  onIdentify: (info: any, image: string) => void
+  onIdentify: (plantInfo: PlantInfo, image: string) => void
 }
 
 export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
@@ -21,7 +22,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
 
     try {
       const imageUrl = URL.createObjectURL(file)
-      const result = await identifyPlant(file)
+      const result = await identifyPlant(file) as PlantInfo
       onIdentify(result, imageUrl)
     } catch (err) {
       setError('Failed to identify plant. Please try again.')
@@ -116,7 +117,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
           ) : (
             <>
               <p className="text-xl text-gray-600">
-                Drag 'n' drop a plant image, or click to select
+                Drag and drop a plant image, or click to select
               </p>
               <em className="text-sm text-gray-500">(Only *.jpeg, *.png, *.jpg and *.webp images will be accepted)</em>
             </>
