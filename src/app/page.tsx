@@ -1,12 +1,13 @@
-// app/page.tsx
 'use client'
+
 import { useState } from 'react'
-import ImageUploader from './components/ImageUploader'
+import dynamic from 'next/dynamic'
 import PlantResults from './components/PlantResults'
 import { PlantInfo } from './types/plant-info'
 
-export default function Home() {
+const ImageUploader = dynamic(() => import('./components/ImageUploader'), { ssr: false })
 
+export default function Home() {
   const [plantInfo, setPlantInfo] = useState<PlantInfo | null>(null)
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
 
@@ -53,7 +54,7 @@ export default function Home() {
 
       <div className="bg-white shadow-xl rounded-2xl p-8 border border-green-100">
         <ImageUploader onIdentify={handleIdentify} />
-        
+
         {uploadedImage && (
           <div className="mt-8">
             <h2 className="text-2xl font-bold text-green-800 mb-4">Uploaded Image</h2>
@@ -66,7 +67,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        
+
         {plantInfo && (
           <PlantResults plantInfo={plantInfo} />
         )}

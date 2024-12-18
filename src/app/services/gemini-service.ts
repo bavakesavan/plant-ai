@@ -1,61 +1,38 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"
-const genAI = new GoogleGenerativeAI(process.env.API_SECRET!);
-
 export async function identifyPlant(file: File) {
-  const reader = new FileReader()
+  const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onloadend = async () => {
-      const base64Image = (reader.result as string).split(',')[1]
+      const base64Image = (reader.result as string).split(",")[1]; // Extract base64 image data
 
       try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-
-        const prompt =
-          "Identify this plant in detail. Provide comprehensive information:" +
-          "\n- Scientific Name" +
-          "\n- Common Name" +
-          "\n- Plant Family" +
-          "\n- Detailed Description" +
-          "\n- Native Region" +
-          "\n- Growth Type (tree, shrub, herb)" +
-          "\n- Sunlight Requirements" +
-          "\n- Temperature Requirements" +
-          "\n- Soil Preference" +
-          "\n- Water Needs" +
-          "\n- Typical Bloom Season" +
-          "\n- Detailed Propagation Methods (at least 2-3 methods if possible)" +
-          "\n\nProvide the most accurate and detailed information possible."
-
-        const result = await model.generateContent({
-          contents: [
-            {
-              role: "user",
-              parts: [
-                { text: prompt },
-                {
-                  inlineData: {
-                    mimeType: file.type, // Ensure file.type is valid (e.g., 'image/jpeg' or 'image/png')
-                    data: base64Image,   // base64-encoded string of the image
-                  },
-                },
-              ],
-            },
-          ],
+        // Call the server-side API route
+        const response = await fetch("/api/identifyPlant", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fileType: file.type,    // Send the file type (e.g., "image/jpeg")
+            base64Image: base64Image, // Send the base64-encoded image
+          }),
         });
 
+        if (!response.ok) {
+          throw new Error("Failed to identify the plant.");
+        }
 
-        const response = await result.response.text()
+        const { response: aiResponse } = await response.json();
 
-        const parsedInfo = parseGeminiResponse(response)
+        const parsedInfo = parseGeminiResponse(aiResponse);
 
-        resolve(parsedInfo)
+        resolve(parsedInfo);
       } catch (error) {
-        reject(error)
+        reject(error);
       }
-    }
-    reader.readAsDataURL(file)
-  })
+    };
+
+    reader.readAsDataURL(file); // Read the file as a data URL
+  });
 }
+
 
 function parseGeminiResponse(response: string) {
   return {
