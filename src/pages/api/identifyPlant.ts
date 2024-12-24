@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const prompt =
-    "Identify this plant in detail. Provide comprehensive information as a json, for each of the following, i want a short info and detailed information. For the sort of temperate i want a min and max:" +
+    "Identify this plant in detail. Avoid using symbols such as asterics in the response. Provide comprehensive information as a json, for each of the following, i want a short information and detailed information. For the short of temperate should have single min and max temp in celcius:" +
     "\n- Scientific Name" +
     "\n- Common Name" +
     "\n- Plant Family" +
@@ -35,7 +35,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     "\n- Soil Preference" +
     "\n- Water Needs" +
     "\n- Typical Bloom Season" +
-    "\n- Detailed Propagation Methods" +
+    "\n- Propagation Methods" +
+    "\n- Health Benefits" +
+    "\n- Location" +
     "\n\nProvide the most accurate and detailed information possible.";
 
   try {

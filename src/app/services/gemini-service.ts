@@ -78,6 +78,8 @@ function parseGeminiResponse(response: GeminiResponse) {
     waterNeeds: extractInfoDetail(response, 'Water Needs'),
     bloomSeason: extractInfoDetail(response, 'Typical Bloom Season'),
     propagationMethods: extractPropagationMethods(response),
+    healthBenefits: extractInfoDetail(response, 'Health Benefits'),
+    location: extractInfoDetail(response, 'Location'),
     name: extractInfoDetail(response, 'Scientific Name').short,
     imageUrl: response.imageUrl || '',
   };

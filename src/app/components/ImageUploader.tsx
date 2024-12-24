@@ -119,15 +119,17 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
         {error && <p className="text-red-500 mt-4">{error}</p>}
       </div>
 
-      <div className="mt-4">
-        <h3 className="text-xl font-bold text-green-800">Logs:</h3>
-        <pre
-          className="bg-gray-100 p-4 rounded-lg text-sm max-h-60 overflow-y-auto"
-          style={{ color: 'black' }} 
-        >
-          {logMessages.join('\n')}
-        </pre>
-      </div>
+      {process.env.NEXT_PUBLIC_USER! == 'dev' && (
+        <div className="mt-4">
+          <h3 className="text-xl font-bold text-green-800">Logs:</h3>
+          <pre
+            className="bg-gray-100 p-4 rounded-lg text-sm max-h-60 overflow-y-auto"
+            style={{ color: 'black' }}
+          >
+            {logMessages.join('\n')}
+          </pre>
+        </div>
+      )}
     </div>
   );
 }

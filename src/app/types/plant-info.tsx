@@ -11,6 +11,8 @@ export interface PlantInfo {
   waterNeeds: InfoDetail;
   bloomSeason: InfoDetail;
   propagationMethods: PropagationMethods;
+  healthBenefits: InfoDetail;
+  location: InfoDetail;
   name: string; 
   imageUrl: string;
 }

@@ -21,7 +21,14 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="bg-green-100 py-4 text-center">
-          <p>© 2024 Plant Identifier</p>
+          <p className="text-gray-600">
+            Built by <a href="https://bavakesavan.com/" target="_blank" rel="noopener noreferrer" className="text-green-600 font-semibold hover:underline">
+              Bava Kesavan
+            </a> • 
+            Source Code on <a href="https://github.com/bavakesavan/plant-ai" target="_blank" rel="noopener noreferrer" className="text-green-600 font-semibold hover:underline">
+              GitHub
+            </a>
+          </p>
         </footer>
       </body>
     </html>
