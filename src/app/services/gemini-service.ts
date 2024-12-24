@@ -1,80 +1,117 @@
-export async function identifyPlant(file: File) {
+import { InfoDetail, PropagationMethods } from '../types/plant-info';
+
+interface GeminiResponse {
+  [key: string]: {
+    short?: string;
+    detailed?: string;
+  } | string;
+  name: string;
+  imageUrl: string;
+}
+
+export async function identifyPlant(
+  file: File,
+  log: (message: string) => void
+): Promise<ReturnType<typeof parseGeminiResponse>> {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onloadend = async () => {
-      const base64Image = (reader.result as string).split(",")[1]; // Extract base64 image data
+      const base64Image = (reader.result as string).split(",")[1];
+      log(`Base64 Image Generated: Length ${base64Image.length}`);
 
       try {
-        // Call the server-side API route
+        const payload = {
+          fileType: file.type,
+          base64Image,
+        };
+        log(`Preparing payload with file type: ${file.type}`);
+
         const response = await fetch("/api/identifyPlant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fileType: file.type,    // Send the file type (e.g., "image/jpeg")
-            base64Image: base64Image, // Send the base64-encoded image
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
-          throw new Error("Failed to identify the plant.");
+          const errorText = await response.text();
+          log(`API Response Error: ${errorText}`);
+          throw new Error("Failed to identify the plant: " + errorText);
         }
 
         const { response: aiResponse } = await response.json();
+        log(`AI Response Received: ${aiResponse}`);
 
-        const parsedInfo = parseGeminiResponse(aiResponse);
+        // Extract the JSON string from the markdown code block
+        const jsonMatch = aiResponse.match(/```json\n([\s\S]*?)\n```/);
+        if (!jsonMatch) {
+          throw new Error("Failed to parse AI response: Invalid format");
+        }
 
+        const cleanedResponse = jsonMatch[1].trim();
+        const parsedResponse = JSON.parse(cleanedResponse) as GeminiResponse;
+        
+        const parsedInfo = parseGeminiResponse(parsedResponse);
+        log("Plant information parsed successfully.");
         resolve(parsedInfo);
       } catch (error) {
+        log(`Error identifying plant: ${(error as Error).message}`);
         reject(error);
       }
     };
 
-    reader.readAsDataURL(file); // Read the file as a data URL
+    log(`Reading file: ${file.name} (type: ${file.type})`);
+    reader.readAsDataURL(file);
   });
 }
 
-
-function parseGeminiResponse(response: string) {
+function parseGeminiResponse(response: GeminiResponse) {
   return {
-    scientificName: extractValue(response, 'Scientific Name') || 'Unable to determine',
-    commonName: extractValue(response, 'Common Name') || 'Unknown',
-    family: extractValue(response, 'Plant Family') || 'Unclassified',
+    scientificName: extractInfoDetail(response, 'Scientific Name'),
+    commonName: extractInfoDetail(response, 'Common Name'),
+    family: extractInfoDetail(response, 'Plant Family'),
     description: extractDescription(response),
-    nativeRegion: extractValue(response, 'Native Region') || 'Not specified',
-    growthType: extractValue(response, 'Growth Type') || 'Unknown',
-    sunlightRequirements: extractValue(response, 'Sunlight Requirements') || 'Not specified',
-    temperatureRequirements: extractValue(response, 'Temperature Requirements') || 'Not specified',
-    soilPreference: extractValue(response, 'Soil Preference') || 'Not specified',
-    waterNeeds: extractValue(response, 'Water Needs') || 'Not specified',
-    bloomSeason: extractValue(response, 'Typical Bloom Season') || 'Not specified',
-    propagationMethods: extractPropagationMethods(response)
+    nativeRegion: extractInfoDetail(response, 'Native Region'),
+    growthType: extractInfoDetail(response, 'Growth Type'),
+    sunlightRequirements: extractInfoDetail(response, 'Sunlight Requirements'),
+    temperatureRequirements: extractInfoDetail(response, 'Temperature Requirements'),
+    soilPreference: extractInfoDetail(response, 'Soil Preference'),
+    waterNeeds: extractInfoDetail(response, 'Water Needs'),
+    bloomSeason: extractInfoDetail(response, 'Typical Bloom Season'),
+    propagationMethods: extractPropagationMethods(response),
+    name: extractInfoDetail(response, 'Scientific Name').short,
+    imageUrl: response.imageUrl || '',
+  };
+}
+
+function extractInfoDetail(response: GeminiResponse, label: string): InfoDetail {
+  const value = response[label];
+  if (typeof value === 'object' && value !== null) {
+    const short = value.short ?? 'Not specified';
+    const detailed = value.detailed ?? short;
+    return { short, detailed };
   }
+  const fallback = value ?? 'Not specified';
+  return { short: fallback, detailed: fallback };
 }
 
-function extractValue(text: string, label: string): string | null {
-  const regex = new RegExp(`${label}:\\s*(.+?)(?=\\n|$)`, 'i')
-  const match = text.match(regex)
-  return match ? match[1].trim() : null
-}
-
-function extractDescription(text: string): string {
-  const descriptionMatch = text.match(/Detailed Description:?\s*(.*?)(?=\n|$)/is)
-  if (descriptionMatch) return descriptionMatch[1].trim()
-
-  return text.length > 300 ? text.substring(0, 300) + '...' : text
-}
-
-function extractPropagationMethods(text: string): string[] {
-  const propagationMatch = text.match(/Detailed Propagation Methods:?\s*(.*?)(?=\n\n|$)/is)
-  if (propagationMatch) {
-    // Split by method numbers or bullet points
-    const methods = propagationMatch[1]
-      .split(/\d+\.|\*|-/)
-      .filter(method => method.trim().length > 10)
-      .map(method => method.trim())
-
-    return methods.length > 0 ? methods : ['No specific propagation methods found.']
+function extractDescription(response: GeminiResponse): InfoDetail {
+  const value = response['Detailed Description'];
+  if (typeof value === 'object' && value !== null) {
+    const short = value.short ?? 'No description available';
+    const detailed = value.detailed ?? short;
+    return { short, detailed };
   }
+  const fallback = value ?? 'No description available';
+  return { short: fallback, detailed: fallback };
+}
 
-  return ['No propagation methods available.']
+function extractPropagationMethods(response: GeminiResponse): PropagationMethods {
+  const value = response['Detailed Propagation Methods'];
+  if (typeof value === 'object' && value !== null) {
+    const short = value.short ?? 'No propagation methods available';
+    const detailed = value.detailed ?? short;
+    return { short, detailed };
+  }
+  const fallback = value ?? 'No propagation methods available';
+  return { short: fallback, detailed: fallback };
 }

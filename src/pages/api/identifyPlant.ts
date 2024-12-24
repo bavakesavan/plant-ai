@@ -1,7 +1,15 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const genAI = new GoogleGenerativeAI(process.env.API_SECRET!);
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '5mb'
+    }
+  }
+};
+
+const genAI = new GoogleGenerativeAI("AIzaSyD5wfA-0RmuJkc4rFnUtYNd0pEjDQyh92E");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -15,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const prompt =
-    "Identify this plant in detail. Provide comprehensive information:" +
+    "Identify this plant in detail. Provide comprehensive information as a json, for each of the following, i want a short info and detailed information. For the sort of temperate i want a min and max:" +
     "\n- Scientific Name" +
     "\n- Common Name" +
     "\n- Plant Family" +
@@ -27,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     "\n- Soil Preference" +
     "\n- Water Needs" +
     "\n- Typical Bloom Season" +
-    "\n- Detailed Propagation Methods (at least 2-3 methods if possible)" +
+    "\n- Detailed Propagation Methods" +
     "\n\nProvide the most accurate and detailed information possible.";
 
   try {

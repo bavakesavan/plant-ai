@@ -20,11 +20,11 @@ export default function Home() {
     <div className="max-w-4xl mx-auto px-4">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-extrabold text-green-900 mb-4">
-          Plant <span className="text-green-600">AI</span>
+          Plant <span className="text-green-600">Helpline</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Discover the world of plants with our advanced AI-powered plant identification technology. 
-          Simply upload an image, and let our intelligent system unveil the botanical mysteries.
+          Discover the world of plants with our AI-powered plant helpline. 
+          Simply upload an image, and we`ll identify the plant and provide you with detailed information about it.
         </p>
       </div>
 

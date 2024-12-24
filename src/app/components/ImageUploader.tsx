@@ -1,73 +1,68 @@
-'use client'
+'use client';
 
-import { useState, useCallback } from 'react'
-import { useDropzone } from 'react-dropzone'
-import heic2any from 'heic2any'
-import { identifyPlant } from '../services/gemini-service'
-import { PlantInfo } from '../types/plant-info'
+import { useState, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { identifyPlant } from '../services/gemini-service';
+import { PlantInfo } from '../types/plant-info';
+import imageCompression from 'browser-image-compression';
 
 interface ImageUploaderProps {
-  onIdentify: (plantInfo: PlantInfo, image: string) => void
+  onIdentify: (plantInfo: PlantInfo, image: string) => void;
 }
 
 export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [logMessages, setLogMessages] = useState<string[]>([])
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [logMessages, setLogMessages] = useState<string[]>([]);
 
-  const log = (message: string) => {
-    setLogMessages((prevLogs) => [...prevLogs, message])
-  }
+  const log = useCallback((message: string) => {
+    setLogMessages((prevLogs) => [...prevLogs, message]);
+    console.log(message);
+  }, []);
 
   const processImage = useCallback(
     async (file: File) => {
-      setIsLoading(true)
-      setError(null)
-
+      setIsLoading(true);
+      setError(null);
+  
       try {
-        let processedFile = file
-
-        // Check if the file is a HEIC/HEIF format
-        if (file.type.includes('heic') || file.type.includes('heif') || file.name.endsWith('.heic')) {
-          try {
-            log('Processing HEIC/HEIF file: ' + file.name)
-            const blob = await heic2any({
-              blob: file,
-              toType: 'image/jpeg',
-              quality: 0.9,
-            })
-            processedFile = new File([blob as Blob], 'converted-image.jpg', { type: 'image/jpeg' })
-            log('Converted HEIC to JPEG successfully')
-          } catch (heicError) {
-            log('HEIC conversion failed: ' + (heicError as Error).message)
-            throw new Error('Failed to process HEIC/HEIF image. Please try a different format.')
-          }
-        }
-
-        const imageUrl = URL.createObjectURL(processedFile)
-        log('Image processed, identifying plant...')
-        const result = (await identifyPlant(processedFile)) as PlantInfo
-        log('Plant identified successfully')
-        onIdentify(result, imageUrl)
+        log(`Processing file: ${file.name}`);
+        let processedFile = file;
+  
+        // Compress the image
+        log('Compressing the image...');
+        const compressedFile = await imageCompression(processedFile, {
+          maxSizeMB: 2,
+          useWebWorker: true,
+        });
+        processedFile = new File([compressedFile], file.name, { type: compressedFile.type });
+        log('Image compression successful');
+  
+        const imageUrl = URL.createObjectURL(processedFile);
+        log('Image processed, starting identification...');
+        const result = await identifyPlant(processedFile, log);
+        log('Plant identified successfully');
+        onIdentify(result, imageUrl);
       } catch (err) {
-        log('Error during plant identification: ' + (err as Error).message)
-        setError('Failed to identify plant. Please try again.')
+        const errorMessage = (err as Error).message;
+        log(`Error: ${errorMessage}`);
+        setError('Failed to identify plant. Please try again.');
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     },
-    [onIdentify]
-  )
+    [onIdentify, log]
+  );
 
   const handleFileUpload = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
-        log('File uploaded: ' + acceptedFiles[0].name)
-        processImage(acceptedFiles[0])
+        log(`File uploaded: ${acceptedFiles[0].name}`);
+        processImage(acceptedFiles[0]);
       }
     },
-    [processImage]
-  )
+    [processImage, log]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleFileUpload,
@@ -75,7 +70,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
       'image/*': ['.jpeg', '.png', '.jpg', '.webp', '.heic', '.heif'],
     },
     multiple: false,
-  })
+  });
 
   return (
     <div>
@@ -126,10 +121,13 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
 
       <div className="mt-4">
         <h3 className="text-xl font-bold text-green-800">Logs:</h3>
-        <pre className="bg-gray-100 p-4 rounded-lg text-sm max-h-60 overflow-y-auto">
+        <pre
+          className="bg-gray-100 p-4 rounded-lg text-sm max-h-60 overflow-y-auto"
+          style={{ color: 'black' }} 
+        >
           {logMessages.join('\n')}
         </pre>
       </div>
     </div>
-  )
+  );
 }

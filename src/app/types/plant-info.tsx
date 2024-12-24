@@ -1,17 +1,26 @@
-export
-  interface PlantInfo {
-    scientificName: string;
-    nativeRegion: string;
-    growthType: string;
-    sunlightRequirements: string;
-    temperatureRequirements: string;
-    soilPreference: string;
-    waterNeeds: string;
-    bloomSeason: string;
-    commonName: string;
-    family: string;
-    propagationMethods: Array<string>;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }
+export interface PlantInfo {
+  scientificName: InfoDetail;
+  commonName: InfoDetail;
+  family: InfoDetail;
+  description: InfoDetail;
+  nativeRegion: InfoDetail;
+  growthType: InfoDetail;
+  sunlightRequirements: InfoDetail;
+  temperatureRequirements: InfoDetail;
+  soilPreference: InfoDetail;
+  waterNeeds: InfoDetail;
+  bloomSeason: InfoDetail;
+  propagationMethods: PropagationMethods;
+  name: string; 
+  imageUrl: string;
+}
+
+export interface InfoDetail {
+  short: string;
+  detailed: string;
+}
+
+export interface PropagationMethods {
+  short: string;
+  detailed: string;
+}

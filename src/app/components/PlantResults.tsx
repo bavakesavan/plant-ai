@@ -1,115 +1,123 @@
-import { PlantInfo } from "../types/plant-info"
+import { PlantInfo } from "../types/plant-info";
+import { FaSun, FaCloudSun, FaCloud } from "react-icons/fa";
+import { WiThermometer, WiRaindrop } from "react-icons/wi";
+import { GiTreeBranch, GiEarthCrack, GiFlowerPot } from "react-icons/gi";
+import { useState } from "react";
 
 export default function PlantResults({ plantInfo }: { plantInfo: PlantInfo }) {
-    if (!plantInfo) return null
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
-    // Check if the identification was unsuccessful
-    const isUnidentified = 
-        plantInfo.scientificName === 'Unable to determine' && 
-        (!plantInfo.description || plantInfo.description.length < 50)
+  if (!plantInfo) return null;
 
-    if (isUnidentified) {
-        return (
-            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-lg">
-                <h3 className="text-2xl font-semibold text-yellow-800 mb-4">Plant Identification Unsuccessful</h3>
-                <div className="text-gray-700">
-                    {plantInfo.description && plantInfo.description.length > 0 ? (
-                        <div>
-                            <p className="italic mb-2">Additional context from AI:</p>
-                            <p>{plantInfo.description}</p>
-                        </div>
-                    ) : (
-                        <p>Our AI was unable to identify the specific plant in the image. This could be due to several reasons:</p>
-                    )}
-                    
-                    <ul className="list-disc list-inside mt-4 space-y-2 text-gray-600">
-                        <li>The image may be unclear or blurry</li>
-                        <li>The plant might be partially obscured</li>
-                        <li>The species could be uncommon or not in our database</li>
-                        <li>The lighting or angle might make identification difficult</li>
-                    </ul>
-                    
-                    <p className="mt-4 font-medium">Suggestions:</p>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                        <li>Try taking a clearer, well-lit photo</li>
-                        <li>Ensure the entire plant is visible</li>
-                        <li>Take the photo from multiple angles</li>
-                        <li>Make sure the plant is the main focus of the image</li>
-                    </ul>
-                </div>
-            </div>
-        )
-    }
+  const toggleCard = (label: string) => {
+    setExpandedCard(expandedCard === label ? null : label);
+  };
 
-    // Predefined additional details
-    const additionalDetails = [
-      { label: 'Native Region', value: plantInfo.nativeRegion ? plantInfo.nativeRegion.slice(3) : 'Not Available' },
-      { label: 'Growth Type', value: plantInfo.growthType ? plantInfo.growthType.slice(3) : 'Not Available' },
-      { label: 'Sunlight Requirements', value: plantInfo.sunlightRequirements ? plantInfo.sunlightRequirements.slice(3) : 'Not Available' },
-      { label: 'Temperature Requirements', value: plantInfo.temperatureRequirements ? plantInfo.temperatureRequirements.slice(3) : 'Not Available' },
-      { label: 'Soil Preference', value: plantInfo.soilPreference ? plantInfo.soilPreference.slice(3) : 'Not Available' },
-      { label: 'Water Needs', value: plantInfo.waterNeeds ? plantInfo.waterNeeds.slice(3) : 'Not Available' },
-      { label: 'Bloom Season', value: plantInfo.bloomSeason ? plantInfo.bloomSeason.slice(3) : 'Not Available' }
-    ]
-  
-    return (
-      <div className="space-y-8">
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <h2 className="text-3xl font-bold text-green-800 mb-4">
-            {plantInfo.scientificName || 'Plant Identified'}
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-xl font-semibold text-green-700 mb-3">Botanical Details</h3>
-              <div className="space-y-2">
-                <p className="text-gray-800"><strong>Common Name:</strong> {plantInfo.commonName || 'Unknown'}</p>
-                <p className="text-gray-800"><strong>Plant Family:</strong> {plantInfo.family || 'Unclassified'}</p>
-              </div>
-            </div>
-  
-            <div>
-              <h3 className="text-xl font-semibold text-green-700 mb-3">Description</h3>
-              <p className="text-gray-800">
-                {plantInfo.description || 'No additional information available'}
-              </p>
-            </div>
-          </div>
-        </div>
-  
-        <div className="bg-green-50 rounded-lg p-6">
-          <h3 className="text-2xl font-semibold text-green-800 mb-5">Plant Characteristics</h3>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-green-100">
-                <th className="p-3 text-left border border-green-200 text-gray-800">Characteristic</th>
-                <th className="p-3 text-left border border-green-200 text-gray-800">Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {additionalDetails.map((detail, index) => (
-                <tr key={index} className="border-b border-green-200">
-                  <td className="p-3 font-medium text-gray-800">{detail.label}</td>
-                  <td className="p-3 text-gray-800">{detail.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-  
-        {plantInfo.propagationMethods && plantInfo.propagationMethods.length > 0 && (
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h3 className="text-2xl font-semibold text-green-800 mb-5">Propagation Methods</h3>
-            <div className="space-y-4">
-              {plantInfo.propagationMethods.map((method: string, index: number) => (
-                <div key={index} className="bg-green-50 p-4 rounded-lg">
-                  <h4 className="font-bold text-green-700 mb-2">Method {index + 1}</h4>
-                  <p className="text-gray-800">{method}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+  const getSunlightIcon = (sunlight: string | undefined) => {
+    if (!sunlight) return <FaCloud className="text-gray-400" />;
+    if (sunlight.toLowerCase().includes("full")) return <FaSun className="text-yellow-500" />;
+    if (sunlight.toLowerCase().includes("partial")) return <FaCloudSun className="text-yellow-400" />;
+    return <FaCloud className="text-gray-400" />;
+  };
+
+  const getTemperatureColor = (temperature: string | undefined) => {
+    if (!temperature) return "text-gray-400";
+    const tempValue = parseFloat(temperature.replace(/[^0-9.-]/g, ""));
+    if (tempValue < 15) return "text-blue-500";
+    if (tempValue >= 15 && tempValue <= 25) return "text-green-500";
+    return "text-red-500";
+  };
+
+  const getWaterNeedsIcon = (waterNeeds: string | undefined) => {
+    if (!waterNeeds) return <WiRaindrop className="text-gray-400" />;
+    if (waterNeeds.toLowerCase().includes("high")) return <WiRaindrop className="text-blue-500" />;
+    if (waterNeeds.toLowerCase().includes("medium")) return <WiRaindrop className="text-green-500" />;
+    return <WiRaindrop className="text-yellow-500" />;
+  };
+
+  const details = [
+    {
+      label: "Sunlight",
+      icon: getSunlightIcon(plantInfo.sunlightRequirements.short),
+      shortText: plantInfo.sunlightRequirements.short || "None",
+      value: plantInfo.sunlightRequirements.detailed || "Not specified",
+    },
+    {
+      label: "Temperature",
+      icon: <WiThermometer className={getTemperatureColor(plantInfo.temperatureRequirements.short)} />,
+      shortText: plantInfo.temperatureRequirements.short || "None",
+      value: plantInfo.temperatureRequirements.detailed || "Not specified",
+    },
+    {
+      label: "Watering",
+      icon: getWaterNeedsIcon(plantInfo.waterNeeds.short),
+      shortText: plantInfo.waterNeeds.short || "None",
+      value: plantInfo.waterNeeds.detailed || "Not specified",
+    },
+    {
+      label: "Native Region",
+      icon: <GiTreeBranch className="text-green-500" />,
+      shortText: plantInfo.nativeRegion.short || "None",
+      value: plantInfo.nativeRegion.detailed || "Not specified",
+    },
+    {
+      label: "Soil Preference",
+      icon: <GiEarthCrack className="text-brown-500" />,
+      shortText: plantInfo.soilPreference.short || "None",
+      value: plantInfo.soilPreference.detailed || "Not specified",
+    },
+    {
+      label: "Bloom Season",
+      icon: <GiFlowerPot className="text-pink-500" />,
+      shortText: plantInfo.bloomSeason.short || "None",
+      value: plantInfo.bloomSeason.detailed || "Not specified",
+    },
+    {
+      label: "Propagation",
+      icon: <GiTreeBranch className="text-blue-500" />,
+      shortText: plantInfo.propagationMethods.short || "None",
+      value: plantInfo.propagationMethods.detailed || "No propagation methods specified",
+    },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-3xl font-bold text-green-800 mb-4">
+          {plantInfo.name || "Plant Identified"}
+        </h2>
+        <p className="text-xl text-gray-700 mb-2">
+          <strong>Common Name:</strong> {plantInfo.commonName.short || "Unknown"}
+        </p>
+        <p className="text-xl text-gray-700 mb-2">
+          <strong>Family:</strong> {plantInfo.family.short || "Unknown"}
+        </p>
+        <p className="text-gray-600 mb-4">
+          {plantInfo.description.detailed || "No description available."}
+        </p>
       </div>
-    )
-  }
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {details.map((detail, index) => (
+          <div key={index} className="relative">
+            {/* Card */}
+            <div
+              className="bg-green-50 rounded-lg p-4 shadow-md cursor-pointer text-center"
+              onClick={() => toggleCard(detail.label)}
+            >
+              <p className="text-gray-800 font-semibold mb-2">{detail.label}</p>
+              <div className="flex items-center justify-center text-3xl mb-3">{detail.icon}</div>
+              <p className="text-sm text-gray-500">{detail.shortText}</p>
+            </div>
+
+            {/* Expanded Grey Card */}
+            {expandedCard === detail.label && (
+              <div className="bg-gray-100 rounded-lg p-4 shadow-lg w-full mt-4">
+                <p className="text-gray-700 text-lg font-medium">{detail.value}</p>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
