@@ -26,7 +26,7 @@ export default function Home() {
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Save any plant, powered by AI.
-              Simply upload an image, and we'll identify the plant and provide you with detailed information about it.
+              Simply upload an image, and we`ll identify the plant and provide you with detailed information about it.
             </p>
           </header>
 
