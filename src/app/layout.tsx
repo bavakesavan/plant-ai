@@ -8,15 +8,20 @@ export const metadata: Metadata = {
   title: 'Plant Helpline',
   description: 'Identify plants with AI',
   openGraph: {
-    title: 'Plant Helpline - AI-Powered Plant Identification',
+    title: 'Plant Helpline | AI-Powered Plant Identification',
     description: 'Upload plant images for instant AI-powered identification and detailed care information.',
     type: 'website',
     locale: 'en_US',
+    images: [
+      {
+        url: '/images/preview.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Plant Helpline Preview',
+      },
+    ],
   },
-  icons: {
-    icon: '/media/favicon.ico',
-  },
-}
+};
 
 export default function RootLayout({
   children,
