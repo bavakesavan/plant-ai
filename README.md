@@ -17,23 +17,9 @@ PlantHelpline is an AI-powered plant identification web application that helps u
 - TypeScript
 - Tailwind CSS
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.0 or later
-- npm or yarn
-- Google Gemini API key
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [Google Gemini](https://ai.google.dev/) for providing the image identification API
-- [Next.js](https://nextjs.org) for the amazing React framework
-- [Tailwind CSS](https://tailwindcss.com) for the utility-first CSS framework
 
 ## Support
 
