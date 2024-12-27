@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "2.6.10",
     "@google/generative-ai": "0.21.0",
     "browser-image-compression": "^2.0.2",
     "heic2any": "^0.0.4",
