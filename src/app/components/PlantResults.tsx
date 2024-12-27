@@ -9,7 +9,7 @@ export default function PlantResults({ plantInfo }: { plantInfo: PlantInfo }) {
   }
 
   return (
-    <div className="space-y-8 p-8">
+    <div id="plantInfo" className="space-y-8 p-8">
       <div>
         <h2 className="text-3xl font-bold text-gray-50 mb-4">
           {plantInfo.scientificName.short || "Plant Identified"}

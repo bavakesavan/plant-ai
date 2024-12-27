@@ -10,6 +10,11 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
 
   if (!plantInfo) return null;
 
+  const plantInfoElement = document.getElementById( 'plantInfo' );
+  if (plantInfoElement) {
+    plantInfoElement.scrollIntoView();
+  }
+
   const toggleCard = (label: string) => {
     setExpandedCard(expandedCard === label ? null : label);
   };
