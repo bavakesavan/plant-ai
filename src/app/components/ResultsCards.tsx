@@ -10,10 +10,6 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
 
   if (!plantInfo) return null;
 
-  const toggleCard = (label: string) => {
-    setExpandedCard(expandedCard === label ? null : label);
-  };
-
   const getSunlightIcon = (sunlight: string | undefined) => {
     if (!sunlight) return <FaCloud className="text-gray-400" />;
     if (sunlight.toLowerCase().includes("full")) return <FaSun className="text-yellow-500" />;
