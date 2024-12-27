@@ -77,7 +77,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
       <div
         {...getRootProps()}
         className={`
-          border-2 border-dashed rounded-lg p-12 text-center cursor-pointer 
+          border-2 border-dashed rounded p-12 text-center cursor-pointer 
           transition-colors duration-300
           ${
             isDragActive
@@ -85,7 +85,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
               : 'border-gray-500 hover:border-gray-200 bg-gray-500'
           }
         `}
-         style={{backgroundColor: 'rgb(51, 51, 54)'}}
+         style={{backgroundColor: 'rgb(10, 10, 10)'}}
       >
         <input {...getInputProps()} />
         {isLoading ? (

@@ -4,8 +4,8 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import PlantResults from './components/PlantResults'
 import { PlantInfo } from './types/plant-info'
-import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
-import PlantResultsCards from "@/app/components/PlantResultsCards";
+import {Card, CardHeader, CardBody, Image } from "@nextui-org/react"
+import ResultsCards from "@/app/components/ResultsCards";
 
 const ImageUploader = dynamic(() => import('./components/ImageUploader'), { ssr: false })
 
@@ -91,7 +91,7 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="shadow-xl rounded-2xl p-8" style={{backgroundColor: 'rgb(51, 51, 54)'}}>
+          <section className="shadow rounded p-8 border border-gray-500" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
             <ImageUploader onIdentify={handleIdentify}/>
           </section>
           <section className="shadow-xl rounded-2xl p-8">
@@ -112,9 +112,9 @@ export default function Home() {
             </div>
 
 
-            <div className="p-8">
+            <div className="rounded-2xl">
               {plantInfo && (
-                  <PlantResultsCards plantInfo={plantInfo}/>
+                  <ResultsCards plantInfo={plantInfo}/>
               )}
             </div>
           </section>

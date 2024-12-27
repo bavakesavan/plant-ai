@@ -1,10 +1,11 @@
 import { PlantInfo } from "../types/plant-info";
 import { FaSun, FaCloudSun, FaCloud } from "react-icons/fa";
 import { WiThermometer, WiRaindrop } from "react-icons/wi";
-import { GiTreeBranch, GiEarthCrack, GiFlowerPot, GiHearts, GiHouse, GiWorld } from "react-icons/gi";
+import { GiTreeBranch, GiEarthCrack, GiFlowerPot, GiHearts, GiHouse, GiWorld, GiForest } from "react-icons/gi";
 import { useState } from "react";
+import {Card, CardBody } from "@nextui-org/react";
 
-export default function PlantResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
+export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   if (!plantInfo) return null;
@@ -35,6 +36,13 @@ export default function PlantResultsCards({ plantInfo }: { plantInfo: PlantInfo 
     if (waterNeeds.toLowerCase().includes("regular")) return <WiRaindrop className="text-green-500" />;
     return <WiRaindrop className="text-yellow-500" />;
   };
+
+  const getLocationIcon = (location: string | undefined) => {
+  if (!location) return <GiHouse className="text-gray-500" />;
+  if (location.toLowerCase().includes("indoor")) return <GiHouse className="text-blue-300" />;
+  if (location.toLowerCase().includes("outdoor")) return <GiForest className="text-green-500" />;
+  return <GiHouse className="text-gray-500" />;
+};
 
   const details = [
     {
@@ -87,7 +95,7 @@ export default function PlantResultsCards({ plantInfo }: { plantInfo: PlantInfo 
     },
     {
       label: "Location",
-      icon: <GiHouse className="text-grey-500" />,
+      icon: getLocationIcon(plantInfo.location.short),
       shortText: plantInfo.location.short || "None Found",
       value: plantInfo.location.detailed || "No location specified",
     },
@@ -97,22 +105,30 @@ export default function PlantResultsCards({ plantInfo }: { plantInfo: PlantInfo 
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {details.map((detail, index) => (
-          <div key={index} className="relative">
+          <div key={index} className="relative rounded-2xl" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
             {/* Card */}
-            <div
-              className="bg-green-50 rounded-lg p-4 shadow-md cursor-pointer text-center"
-              onClick={() => toggleCard(detail.label)}
-            >
-              <p className="text-gray-800 font-semibold mb-2">{detail.label}</p>
-              <div className="flex items-center justify-center text-3xl mb-3">{detail.icon}</div>
-              <p className="text-sm text-gray-500">{detail.shortText}</p>
-            </div>
+            <Card key={index} isPressable shadow="sm" onPress={() => setExpandedCard(detail.label)} className="p-6 rounded-2xl w-full">
+              <CardBody className="overflow-visible py-2">
+                <div className="text-4xl mb-3">{detail.icon}</div>
+              </CardBody>
+              <b className="text-lg">{detail.label}</b>
+              <div className="flex justify-between items-center w-full">
+                <p className="text-default-500 text-gray-400">{detail.shortText}</p>
+                <button className="ml-auto" type="button">
+                  <img
+                    src="/green_plus.png"
+                    alt="Plus Icon"
+                    className="w-[30px] h-[30px] object-contain"
+                  />
+                </button>
+              </div>
+            </Card>
 
             {/* Expanded Grey Card */}
             {expandedCard === detail.label && (
-              <div className="bg-gray-100 rounded-lg p-4 shadow-lg w-full mt-4">
-                <p className="text-gray-700 text-lg font-medium">{detail.value}</p>
-              </div>
+                <div className="bg-gray-100 rounded-lg p-4 shadow-lg w-full mt-4">
+                  <p className="text-gray-700 text-lg font-medium">{detail.value}</p>
+                </div>
             )}
           </div>
         ))}
