@@ -108,12 +108,12 @@ function extractDescription(response: GeminiResponse): InfoDetail {
 }
 
 function extractPropagationMethods(response: GeminiResponse): PropagationMethods {
-  const value = response['Detailed Propagation Methods'];
+  const value = response['Propagation Methods'];
   if (typeof value === 'object' && value !== null) {
-    const short = value.short ?? 'No propagation methods available';
+    const short = value.short ?? 'No propagation method available';
     const detailed = value.detailed ?? short;
     return { short, detailed };
   }
-  const fallback = value ?? 'No propagation methods available';
+  const fallback = value ?? 'No propagation method available';
   return { short: fallback, detailed: fallback };
 }
