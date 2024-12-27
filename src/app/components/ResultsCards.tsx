@@ -9,12 +9,10 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  useDisclosure,
 } from "@nextui-org/react";
 
 export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   if (!plantInfo) return null;
 
@@ -46,11 +44,11 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
   };
 
   const getLocationIcon = (location: string | undefined) => {
-  if (!location) return <GiHouse className="text-gray-500" />;
-  if (location.toLowerCase().includes("indoor")) return <GiHouse className="text-blue-400" />;
-  if (location.toLowerCase().includes("outdoor")) return <GiTreehouse className="text-green-500" />;
-  return <GiHouse className="text-gray-500" />;
-};
+    if (!location) return <GiHouse className="text-gray-500" />;
+    if (location.toLowerCase().includes("indoor")) return <GiHouse className="text-blue-400" />;
+    if (location.toLowerCase().includes("outdoor")) return <GiTreehouse className="text-green-500" />;
+    return <GiHouse className="text-gray-500" />;
+  };
 
   const details = [
     {
@@ -113,20 +111,20 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
     <div className="space-y-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {details.map((detail, index) => (
-          <div key={index} className="relative rounded-2xl" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
+          <div key={index} className="relative rounded-2xl" style={{ backgroundColor: 'rgb(29, 29, 31)' }}>
             {/* Card */}
-            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
+            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full" style={{ backgroundColor: 'rgb(29, 29, 31)' }}>
               <CardBody className="overflow-visible py-2">
                 <div className="text-4xl mb-3">{detail.icon}</div>
               </CardBody>
               <b className="text-lg">{detail.label}</b>
-              <div className="flex justify-between items-center w-full">
+              <div className="flex justify-between items-center text-left w-full">
                 <p className="text-gray-400">{detail.shortText}</p>
-                  <img
-                    src="/green_plus.png"
-                    alt="Plus Icon"
-                    className="w-[30px] h-[30px] object-contain"
-                  />
+                <img
+                  src="/green_plus.png"
+                  alt="Plus Icon"
+                  className="w-[30px] h-[30px] object-contain"
+                />
               </div>
             </Card>
 
@@ -137,7 +135,7 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
               size={"2xl"}
               onClose={() => setExpandedCard(null)}
               onClick={() => setExpandedCard(null)}
-              style={{backgroundColor: 'rgb(10, 10, 10)'}}
+              style={{ backgroundColor: 'rgb(10, 10, 10)' }}
             >
               <ModalContent>
                 <div className="grid md:grid-cols-[70%_30%] p-8">

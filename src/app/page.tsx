@@ -4,7 +4,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import PlantResults from './components/PlantResults'
 import { PlantInfo } from './types/plant-info'
-import {Card, CardHeader, CardBody, Image } from "@nextui-org/react"
+import { Card, CardHeader, CardBody, Image } from "@nextui-org/react"
 import ResultsCards from "@/app/components/ResultsCards";
 
 const ImageUploader = dynamic(() => import('./components/ImageUploader'), { ssr: false })
@@ -34,13 +34,13 @@ export default function Home() {
 
           <section className="mt-12 rounded-2xl p-8" aria-label="How it works">
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
+              <Card className="py-4" style={{ backgroundColor: 'rgb(10, 10, 10)' }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
-                      alt="Picture of person taking a photo of a plant"
-                      className="object-cover rounded-xl"
-                      src="hand_picture.webp"
-                      width={550}
+                    alt="Picture of person taking a photo of a plant"
+                    className="object-cover rounded-xl"
+                    src="hand_picture.webp"
+                    width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -51,13 +51,13 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
+              <Card className="py-4" style={{ backgroundColor: 'rgb(10, 10, 10)' }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
-                      alt="Picture of person taking a photo of a plant"
-                      className="object-cover rounded-xl"
-                      src="hand_picture.webp"
-                      width={550}
+                    alt="Picture of person taking a photo of a plant"
+                    className="object-cover rounded-xl"
+                    src="hand_picture.webp"
+                    width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -70,13 +70,13 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
+              <Card className="py-4" style={{ backgroundColor: 'rgb(10, 10, 10)' }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
-                      alt="Picture of person taking a photo of a plant"
-                      className="object-cover rounded-xl"
-                      src="hand_picture.webp"
-                      width={550}
+                    alt="Picture of person taking a photo of a plant"
+                    className="object-cover rounded-xl"
+                    src="hand_picture.webp"
+                    width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -91,30 +91,30 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="shadow rounded p-8 border border-gray-500" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
-            <ImageUploader onIdentify={handleIdentify}/>
+          <section className="shadow rounded p-8 border border-gray-500" style={{ backgroundColor: 'rgb(10, 10, 10)' }}>
+            <ImageUploader onIdentify={handleIdentify} />
           </section>
           <section className="shadow-xl rounded-2xl p-8">
             <div className="grid md:grid-cols-[40%_60%] gap-6">
               {uploadedImage && (
-                  <div id="plantInfo" className="flex justify-center mb-8">
-                    <img
-                        src={uploadedImage}
-                        alt="Uploaded plant"
-                        className="shadow-md object-cover w-full h-full"
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
-                    />
-                  </div>
+                <div id="plantInfo" className="flex justify-center mb-8">
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded plant"
+                    className="shadow-md object-cover w-full h-full"
+                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  />
+                </div>
               )}
               {plantInfo && (
-                  <PlantResults plantInfo={plantInfo}/>
+                <PlantResults plantInfo={plantInfo} />
               )}
             </div>
 
 
             <div className="rounded-2xl">
               {plantInfo && (
-                  <ResultsCards plantInfo={plantInfo}/>
+                <ResultsCards plantInfo={plantInfo} />
               )}
             </div>
           </section>
