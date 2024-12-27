@@ -24,11 +24,11 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
     async (file: File) => {
       setIsLoading(true);
       setError(null);
-  
+
       try {
         log(`Processing file: ${file.name}`);
         let processedFile = file;
-  
+
         // Compress the image
         log('Compressing the image...');
         const compressedFile = await imageCompression(processedFile, {
@@ -37,7 +37,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
         });
         processedFile = new File([compressedFile], file.name, { type: compressedFile.type });
         log('Image compression successful');
-  
+
         const imageUrl = URL.createObjectURL(processedFile);
         log('Image processed, starting identification...');
         const result = await identifyPlant(processedFile, log);
@@ -79,13 +79,12 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
         className={`
           border-2 border-dashed rounded p-12 text-center cursor-pointer 
           transition-colors duration-300
-          ${
-            isDragActive
-              ? 'border-gray-300 bg-gray-200'
-              : 'border-gray-500 hover:border-gray-200 bg-gray-500'
+          ${isDragActive
+            ? 'border-gray-300 bg-gray-200'
+            : 'border-gray-500 hover:border-gray-200 bg-gray-500'
           }
         `}
-         style={{backgroundColor: 'rgb(10, 10, 10)'}}
+        style={{ backgroundColor: 'rgb(10, 10, 10)' }}
       >
         <input {...getInputProps()} />
         {isLoading ? (

@@ -113,7 +113,7 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
         {details.map((detail, index) => (
           <div key={index} className="relative rounded-2xl" style={{ backgroundColor: 'rgb(29, 29, 31)' }}>
             {/* Card */}
-            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full" style={{ backgroundColor: 'rgb(29, 29, 31)' }}>
+            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full h-full" style={{ backgroundColor: 'rgb(29, 29, 31)' }}>
               <CardBody className="overflow-visible py-2">
                 <div className="text-4xl mb-3">{detail.icon}</div>
               </CardBody>

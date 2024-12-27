@@ -34,7 +34,7 @@ export default function Home() {
       <section className="flex-grow">
         <div className="mx-auto px-4">
           <header className="text-center mb-12">
-            <h1 className="text-5xl font-extrabold text-green-600 mb-4">
+            <h1 className="text-6xl font-extrabold text-green-600 mb-4">
               Plant <span className="text-gray-200">Helpline</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
@@ -45,12 +45,12 @@ export default function Home() {
 
           <section className="mt-12 rounded-2xl p-8" aria-label="How it works">
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="py-4" style={{ backgroundColor: "rgb(10, 10, 10)" }}>
+              <Card className="py-4" style={{ backgroundColor: "rgb(0, 0, 0)" }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                     alt="Picture of person taking a photo of a plant"
                     className="object-cover rounded-xl"
-                    src="hand_picture.webp"
+                    src="/images/hand_picture.webp"
                     width={550}
                   />
                 </CardBody>
@@ -62,12 +62,12 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4" style={{ backgroundColor: "rgb(10, 10, 10)" }}>
+              <Card className="py-4" style={{ backgroundColor: "rgb(0, 0, 0)" }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                     alt="Picture of person taking a photo of a plant"
                     className="object-cover rounded-xl"
-                    src="gemini_scan.webp"
+                    src="/images/gemini_scan.webp"
                     width={550}
                   />
                 </CardBody>
@@ -81,12 +81,12 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4" style={{ backgroundColor: "rgb(10, 10, 10)" }}>
+              <Card className="py-4" style={{ backgroundColor: "rgb(0, 0, 0)" }}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                     alt="Picture of person taking a photo of a plant"
                     className="object-cover rounded-xl"
-                    src="details.webp"
+                    src="/images/details.webp"
                     width={550}
                   />
                 </CardBody>
