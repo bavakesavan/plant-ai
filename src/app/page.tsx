@@ -67,7 +67,7 @@ export default function Home() {
                   <Image
                     alt="Picture of person taking a photo of a plant"
                     className="object-cover rounded-xl"
-                    src="hand_picture.webp"
+                    src="gemini_scan.webp"
                     width={550}
                   />
                 </CardBody>
@@ -86,7 +86,7 @@ export default function Home() {
                   <Image
                     alt="Picture of person taking a photo of a plant"
                     className="object-cover rounded-xl"
-                    src="hand_picture.webp"
+                    src="details.webp"
                     width={550}
                   />
                 </CardBody>
