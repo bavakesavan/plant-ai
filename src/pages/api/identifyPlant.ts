@@ -9,7 +9,7 @@ export const config = {
   }
 };
 
-const genAI = new GoogleGenerativeAI("AIzaSyD5wfA-0RmuJkc4rFnUtYNd0pEjDQyh92E");
+const genAI = new GoogleGenerativeAI(process.env.API_SECRET!);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
