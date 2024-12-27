@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" style={{scrollBehavior:'smooth'}}>
     <body className={`${inter.className} min-h-screen flex flex-col`} style={{backgroundColor: 'rgb(0, 0, 0)'}}>
     <main className="container mx-auto px-4 py-8 flex-grow">
       {children}

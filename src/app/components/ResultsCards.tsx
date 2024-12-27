@@ -10,11 +10,6 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
 
   if (!plantInfo) return null;
 
-  const plantInfoElement = document.getElementById( 'plantInfo' );
-  if (plantInfoElement) {
-    plantInfoElement.scrollIntoView();
-  }
-
   const toggleCard = (label: string) => {
     setExpandedCard(expandedCard === label ? null : label);
   };
@@ -119,13 +114,11 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
               <b className="text-lg">{detail.label}</b>
               <div className="flex justify-between items-center w-full">
                 <p className="text-default-500 text-gray-400">{detail.shortText}</p>
-                <button className="ml-auto" type="button">
                   <img
                     src="/green_plus.png"
                     alt="Plus Icon"
                     className="w-[30px] h-[30px] object-contain"
                   />
-                </button>
               </div>
             </Card>
 

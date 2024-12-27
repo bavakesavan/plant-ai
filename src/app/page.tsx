@@ -97,7 +97,7 @@ export default function Home() {
           <section className="shadow-xl rounded-2xl p-8">
             <div className="grid md:grid-cols-[40%_60%] gap-6">
               {uploadedImage && (
-                  <div className="flex justify-center mb-8">
+                  <div id="plantInfo" className="flex justify-center mb-8">
                     <img
                         src={uploadedImage}
                         alt="Uploaded plant"
