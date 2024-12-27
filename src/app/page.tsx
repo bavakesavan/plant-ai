@@ -34,13 +34,13 @@ export default function Home() {
 
           <section className="mt-12 rounded-2xl p-8" aria-label="How it works">
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="py-4">
+              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={350}
+                      width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -51,13 +51,13 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4">
+              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={350}
+                      width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -70,13 +70,13 @@ export default function Home() {
                   </div>
                 </CardHeader>
               </Card>
-              <Card className="py-4">
+              <Card className="py-4" style={{backgroundColor: 'rgb(10, 10, 10)'}}>
                 <CardBody className="overflow-visible py-2">
                   <Image
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={350}
+                      width={550}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">

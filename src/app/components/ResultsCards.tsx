@@ -3,10 +3,18 @@ import { FaSun, FaCloudSun, FaCloud } from "react-icons/fa";
 import { WiThermometer, WiRaindrop } from "react-icons/wi";
 import { GiTreeBranch, GiEarthCrack, GiFlowerPot, GiHearts, GiHouse, GiWorld, GiTreehouse } from "react-icons/gi";
 import { useState } from "react";
-import {Card, CardBody } from "@nextui-org/react";
+import {
+  Card, CardBody,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
   if (!plantInfo) return null;
 
@@ -107,13 +115,13 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
         {details.map((detail, index) => (
           <div key={index} className="relative rounded-2xl" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
             {/* Card */}
-            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full">
+            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
               <CardBody className="overflow-visible py-2">
                 <div className="text-4xl mb-3">{detail.icon}</div>
               </CardBody>
               <b className="text-lg">{detail.label}</b>
               <div className="flex justify-between items-center w-full">
-                <p className="text-default-500 text-gray-400">{detail.shortText}</p>
+                <p className="text-gray-400">{detail.shortText}</p>
                   <img
                     src="/green_plus.png"
                     alt="Plus Icon"
@@ -122,12 +130,31 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
               </div>
             </Card>
 
-            {/* Expanded Grey Card */}
-            {expandedCard === detail.label && (
-                <div className="bg-gray-100 rounded-lg p-4 shadow-lg w-full mt-4">
-                  <p className="text-gray-700 text-lg font-medium">{detail.value}</p>
+            {/* Modal */}
+            <Modal
+              isOpen={expandedCard === detail.label}
+              backdrop="blur"
+              size={"2xl"}
+              onClose={() => setExpandedCard(null)}
+              onClick={() => setExpandedCard(null)}
+              style={{backgroundColor: 'rgb(10, 10, 10)'}}
+            >
+              <ModalContent>
+                <div className="grid md:grid-cols-[70%_30%] p-8">
+                  <div className="col-span-1 text-left">
+                    <ModalHeader className="text-left text-3xl font-bold">
+                      {detail.label}
+                    </ModalHeader>
+                    <ModalBody>
+                      <p className="text-gray-400">{detail.value}</p>
+                    </ModalBody>
+                  </div>
+                  <div className="col-span-1 flex justify-center text-7xl mb-3 p-4">
+                    {detail.icon}
+                  </div>
                 </div>
-            )}
+              </ModalContent>
+            </Modal>
           </div>
         ))}
       </div>
