@@ -81,14 +81,15 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
           transition-colors duration-300
           ${
             isDragActive
-              ? 'border-green-600 bg-green-100'
-              : 'border-gray-300 hover:border-green-500 bg-white'
+              ? 'border-gray-300 bg-gray-200'
+              : 'border-gray-500 hover:border-gray-200 bg-gray-500'
           }
         `}
+         style={{backgroundColor: 'rgb(51, 51, 54)'}}
       >
         <input {...getInputProps()} />
         {isLoading ? (
-          <div className="flex justify-center items-center text-green-600">
+          <div className="flex justify-center items-center text-gray-300">
             <svg className="animate-spin h-8 w-8 mr-3" viewBox="0 0 24 24">
               <circle
                 className="opacity-25"
@@ -108,7 +109,7 @@ export default function ImageUploader({ onIdentify }: ImageUploaderProps) {
           </div>
         ) : (
           <>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-200">
               Drag and drop a plant image, or click to select
             </p>
             <em className="text-sm text-gray-500">
