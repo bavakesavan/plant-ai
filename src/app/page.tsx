@@ -40,7 +40,7 @@ export default function Home() {
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={550}
+                      width={350}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -57,7 +57,7 @@ export default function Home() {
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={550}
+                      width={350}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
@@ -76,7 +76,7 @@ export default function Home() {
                       alt="Picture of person taking a photo of a plant"
                       className="object-cover rounded-xl"
                       src="hand_picture.webp"
-                      width={550}
+                      width={350}
                   />
                 </CardBody>
                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">

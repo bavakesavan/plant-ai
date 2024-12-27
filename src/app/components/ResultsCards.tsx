@@ -1,7 +1,7 @@
 import { PlantInfo } from "../types/plant-info";
 import { FaSun, FaCloudSun, FaCloud } from "react-icons/fa";
 import { WiThermometer, WiRaindrop } from "react-icons/wi";
-import { GiTreeBranch, GiEarthCrack, GiFlowerPot, GiHearts, GiHouse, GiWorld, GiForest } from "react-icons/gi";
+import { GiTreeBranch, GiEarthCrack, GiFlowerPot, GiHearts, GiHouse, GiWorld, GiTreehouse } from "react-icons/gi";
 import { useState } from "react";
 import {Card, CardBody } from "@nextui-org/react";
 
@@ -9,6 +9,10 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
   if (!plantInfo) return null;
+
+  const toggleCard = (label: string) => {
+    setExpandedCard(expandedCard === label ? null : label);
+  };
 
   const getSunlightIcon = (sunlight: string | undefined) => {
     if (!sunlight) return <FaCloud className="text-gray-400" />;
@@ -35,8 +39,8 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
 
   const getLocationIcon = (location: string | undefined) => {
   if (!location) return <GiHouse className="text-gray-500" />;
-  if (location.toLowerCase().includes("indoor")) return <GiHouse className="text-blue-300" />;
-  if (location.toLowerCase().includes("outdoor")) return <GiForest className="text-green-500" />;
+  if (location.toLowerCase().includes("indoor")) return <GiHouse className="text-blue-400" />;
+  if (location.toLowerCase().includes("outdoor")) return <GiTreehouse className="text-green-500" />;
   return <GiHouse className="text-gray-500" />;
 };
 
@@ -91,7 +95,7 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
     },
     {
       label: "Location",
-      icon: getLocationIcon(plantInfo.location.short),
+      icon: getLocationIcon(plantInfo.location.detailed),
       shortText: plantInfo.location.short || "None Found",
       value: plantInfo.location.detailed || "No location specified",
     },
@@ -103,7 +107,7 @@ export default function ResultsCards({ plantInfo }: { plantInfo: PlantInfo }) {
         {details.map((detail, index) => (
           <div key={index} className="relative rounded-2xl" style={{backgroundColor: 'rgb(29, 29, 31)'}}>
             {/* Card */}
-            <Card key={index} isPressable shadow="sm" onPress={() => setExpandedCard(detail.label)} className="p-6 rounded-2xl w-full">
+            <Card key={index} isPressable shadow="sm" onPress={() => toggleCard(detail.label)} className="p-6 rounded-2xl w-full">
               <CardBody className="overflow-visible py-2">
                 <div className="text-4xl mb-3">{detail.icon}</div>
               </CardBody>
