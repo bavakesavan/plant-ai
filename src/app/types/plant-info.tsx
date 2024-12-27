@@ -13,7 +13,7 @@ export interface PlantInfo {
   propagationMethods: PropagationMethods;
   healthBenefits: InfoDetail;
   location: InfoDetail;
-  name: string; 
+  name: string;
   imageUrl: string;
 }
 

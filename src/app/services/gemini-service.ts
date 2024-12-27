@@ -49,7 +49,7 @@ export async function identifyPlant(
 
         const cleanedResponse = jsonMatch[1].trim();
         const parsedResponse = JSON.parse(cleanedResponse) as GeminiResponse;
-        
+
         const parsedInfo = parseGeminiResponse(parsedResponse);
         log("Plant information parsed successfully.");
         resolve(parsedInfo);

@@ -9,7 +9,7 @@ export const config = {
   }
 };
 
-const genAI = new GoogleGenerativeAI(process.env.API_SECRET!);
+const genAI = new GoogleGenerativeAI("AIzaSyD5wfA-0RmuJkc4rFnUtYNd0pEjDQyh92E");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const prompt =
-    "Identify this plant in detail. Make sure to provide information for all the fields listed below, Avoid using symbols such as asterics in the response. Provide comprehensive information as a json, for each of the following, i want a short information and detailed information. For the short of temperate should have single min and max temp in celcius:" +
+    "Identify this plant in detail. Make sure to provide information for all the fields listed below, Avoid using symbols such as asterics in the response. Provide comprehensive information as a json, for each of the following attributes, I want 'short and 'detailed' attributes. For the short of temperate should have single min and max temp in celcius:" +
     "\n- Scientific Name" +
     "\n- Common Name" +
     "\n- Plant Family" +
